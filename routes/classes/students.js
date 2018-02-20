@@ -19,15 +19,17 @@ const loadClass = (req, res, next) => {
 const getStudents = (req, res, next) => {
   Promise.all(req.group.students.map(student => User.findById(student.userId)))
     .then((users) => {
+      console.log(req)
       // Combine student data and user's name
       req.students = req.group.students.map((student) => {
         const { name } = users
           .filter((u) => u._id.toString() === student.userId.toString())[0]
 
         return {
-          userId: student.userId,
-          symbol: student.symbol,
-          name
+          _id: student._id,
+          reviews: student.reviews,
+          name: student.name,
+          lastReview: student.lastReview
         }
       })
       next()
@@ -44,17 +46,11 @@ module.exports = io => {
 
     .post('/classes/:id/students', authenticate, loadClass, (req, res, next) => {
       if (!req.group) { return next() }
+      console.log(req)
 
-      const userId = req.account._id
-
-      if (req.group.students.filter((p) => p.userId.toString() === userId.toString()).length > 0) {
-        const error = Error.new('You already joined this group!')
-        error.status = 401
-        return next(error)
-      }
-
+      let student = {name:req.body.name,picture:req.body.picture,reviews:[],lastReview:'negative'}
       // Add the user to the students
-      req.group.students = [...req.group.students, { userId }]
+      req.group.students = [student,...req.group.students]
 
       req.group.save()
         .then((group) => {

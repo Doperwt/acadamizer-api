@@ -29,10 +29,12 @@ module.exports = io => {
         .catch((error) => next(error))
     })
     .post('/classes', authenticate, (req, res, next) => {
+      console.log(req)
+      // debugger
       const newClass = {
-        name: req.name,
-        startDate: req.start,
-        endDate: req.end,
+        name: req.body.name,
+        startDate: req.body.start,
+        endDate: req.body.end,
         students: []
       }
 
