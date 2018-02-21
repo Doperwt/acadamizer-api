@@ -17,13 +17,13 @@ const loadClass = (req, res, next) => {
 }
 
 const getStudents = (req, res, next) => {
-  Promise.all(req.group.students.map(student => User.findById(student.userId)))
+  Promise.all(req.group.students.map(student => User.findById(student._id)))
     .then((users) => {
       console.log(req)
       // Combine student data and user's name
       req.students = req.group.students.map((student) => {
         const { name } = users
-          .filter((u) => u._id.toString() === student.userId.toString())[0]
+          .filter((u) => u._id.toString() === student._id.toString())[0]
 
         return {
           _id: student._id,
@@ -39,9 +39,9 @@ const getStudents = (req, res, next) => {
 
 module.exports = io => {
   router
-    .get('/classes/:id/students', loadClass, getStudents, (req, res, next) => {
-      if (!req.group || !req.students) { return next() }
-      res.json(req.students)
+    .get('/classes/:id/students', loadClass, (req, res, next) => {
+      if (!req.group || !req.group.students) { return next() }
+      res.json(req.group.students)
     })
 
     .post('/classes/:id/students', authenticate, loadClass, (req, res, next) => {
@@ -60,24 +60,26 @@ module.exports = io => {
         .catch((error) => next(error))
     },
     // Fetch new student data
-    getStudents,
     // Respond with new student data in JSON and over socket
     (req, res, next) => {
       io.emit('action', {
-        type: 'class_PLAYERS_UPDATED',
+        type: 'CLASS_STUDENTS_UPDATED',
         payload: {
           group: req.group,
-          students: req.students
+          students: req.group.students
         }
       })
       res.json(req.students)
     })
 
-    .delete('/classes/:id/students', authenticate, (req, res, next) => {
+    .delete('/classes/:id/students', authenticate,loadClass, (req, res, next) => {
       if (!req.group) { return next() }
+      console.log(req.group)
+      const userId = req.body.studentId
+      // debugger
+      console.log(userId,req.group.students[0]._id.toString())
 
-      const userId = req.account._id
-      const currentStudent = req.group.students.filter((p) => p.userId.toString() === userId.toString())[0]
+      const currentStudent = req.group.students.filter(p => p._id.toString() === userId)[0]
 
       if (!currentStudent) {
         const error = Error.new('You are not a student of this group!')
@@ -85,7 +87,7 @@ module.exports = io => {
         return next(error)
       }
 
-      req.group.students = req.group.students.filter((p) => p.userId.toString() !== userId.toString())
+      req.group.students = req.group.students.filter(p => p._id.toString() !== userId)
       req.group.save()
         .then((group) => {
           req.group = group
@@ -95,17 +97,17 @@ module.exports = io => {
 
     },
     // Fetch new student data
-    getStudents,
+    // getStudents,
     // Respond with new student data in JSON and over socket
     (req, res, next) => {
       io.emit('action', {
-        type: 'class_PLAYERS_UPDATED',
+        type: 'CLASS_STUDENTS_UPDATED',
         payload: {
           group: req.group,
-          students: req.students
+          students: req.group.students
         }
       })
-      res.json(req.students)
+      res.json(req.group.students)
     })
 
   return router

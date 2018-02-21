@@ -32,7 +32,7 @@ module.exports = io => {
       console.log(req)
       // debugger
       const newClass = {
-        name: req.body.name,
+        name:  'batch-'+req.body.name,
         startDate: req.body.start,
         endDate: req.body.end,
         students: []
