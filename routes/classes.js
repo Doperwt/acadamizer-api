@@ -41,7 +41,7 @@ module.exports = io => {
       Class.create(newClass)
         .then((group) => {
           io.emit('action', {
-            type: 'GAME_CREATED',
+            type: 'CLASS_CREATED',
             payload: group
           })
           res.json(group)
@@ -61,7 +61,7 @@ module.exports = io => {
           Class.findByIdAndUpdate(id, { $set: updatedClass }, { new: true })
             .then((group) => {
               io.emit('action', {
-                type: 'GAME_UPDATED',
+                type: 'CLASS_UPDATED',
                 payload: group
               })
               res.json(group)
@@ -75,7 +75,7 @@ module.exports = io => {
       Class.findByIdAndRemove(id)
         .then(() => {
           io.emit('action', {
-            type: 'GAME_REMOVED',
+            type: 'CLASS_REMOVED',
             payload: id
           })
           res.status = 200
