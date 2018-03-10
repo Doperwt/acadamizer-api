@@ -1,6 +1,6 @@
-# Express Games API
+# Express Acadamizer API
 
-RESTful Express API for Games on top of MongoDB.
+RESTful Express API for Classe/students on top of MongoDB.
 
 ## Authentication
 
@@ -26,20 +26,18 @@ To authorize further requests, use Bearer authentication with the provided JWT t
 Authorization: Bearer <token here>
 ```
 
-_**Note**: See `db/seed.js` for an example._
 
-## Games
+## Classes
 
 **Note:** See `models/game.js` for the Game schema attributes.
 
 | HTTP Verb | Path | Description |
 |-----------|------|--------------|
-| `GET` | `/games` | Retrieve all games |
-| `POST` | `/games` | Create a game* |
-| `GET` | `/games/:id` | Retrieve a single game by it's `id` |
-| `PUT` | `/games/:id` | Update a game with a specific `id`* |
-| `PATCH` | `/games/:id` | Patch (partial update) a game with a specific `id`* |
-| `DELETE` | `/games/:id` | Destroy a single game by it's `id`* |
+| `GET` | `/classes` | Retrieve all games |
+| `POST` | `/classes` | Create a game* |
+| `GET` | `/classes/:id` | Retrieve a single game by it's `id` |
+| `PUT` | `/classes/:id` | Update a game with a specific `id`* |
+| `PATCH` | `/classes/:id` | Patch (partial update) a game with a specific `id`* |
+| `DELETE` | `/classes/:id` | Destroy a single game by it's `id`* |
 | | | _* Needs authentication_ |
 
-_**Note**: Run `yarn run seed` to seed some initial games._
