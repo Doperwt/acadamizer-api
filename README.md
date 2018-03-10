@@ -29,7 +29,7 @@ Authorization: Bearer <token here>
 
 ## Classes
 
-**Note:** See `models/game.js` for the Game schema attributes.
+**Note:** See `models/class.js` for the Game schema attributes.
 
 | HTTP Verb | Path | Description |
 |-----------|------|--------------|
