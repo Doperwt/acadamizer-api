@@ -1,6 +1,7 @@
 # Express Acadamizer API
 
-RESTful Express API for Classe/students on top of MongoDB.
+Final solo assignment Codaisseur academy.
+RESTful Express API for Classes/students on top of MongoDB.
 
 ## Authentication
 
@@ -29,15 +30,19 @@ Authorization: Bearer <token here>
 
 ## Classes
 
-**Note:** See `models/class.js` for the Game schema attributes.
+**Note:** See `models/class.js` for the Class schema attributes.
 
 | HTTP Verb | Path | Description |
 |-----------|------|--------------|
-| `GET` | `/classes` | Retrieve all games |
-| `POST` | `/classes` | Create a game* |
-| `GET` | `/classes/:id` | Retrieve a single game by it's `id` |
-| `PUT` | `/classes/:id` | Update a game with a specific `id`* |
-| `PATCH` | `/classes/:id` | Patch (partial update) a game with a specific `id`* |
-| `DELETE` | `/classes/:id` | Destroy a single game by it's `id`* |
+| `GET` | `/classes` | Retrieve all classes |
+| `POST` | `/classes` | Create a class* |
+| `GET` | `/classes/:id` | Retrieve a single class by it's `id` |
+| `PUT` | `/classes/:id` | Update a class with a specific `id`* |
+| `PATCH` | `/classes/:id` | Patch (partial update) a class with a specific `id`* |
+| `DELETE` | `/classes/:id` | Destroy a single class by it's `id`* |
+| `GET` | `/classes/:id/students` | Retrieve all Students for a specific class |
+| `POST` | `/classes/:id/students` | Add a student to a class *|
+| `PATCH` | `/classes/:id/students/:studentId`| Update a student in a class with a specific `id` *|
+| `DELETE` | `/classes/:id/students` | Delete a student in a class with a specific `id` *|
 | | | _* Needs authentication_ |
 
